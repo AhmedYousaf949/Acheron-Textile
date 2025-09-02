@@ -8,6 +8,26 @@ document.addEventListener('DOMContentLoaded', function() {
         smartBackspace: false,
         contentType: 'html'
     });
+
+    // Testimonials Swiper initialization (2 slides per view, swipe one by one)
+    new Swiper('.testimonials-swiper', {
+        slidesPerView: 2,
+        spaceBetween: 24,
+        loop: true,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.testimonials-section .swiper-button-next',
+            prevEl: '.testimonials-section .swiper-button-prev',
+        },
+        slidesPerGroup: 1, // Swipe one by one
+        breakpoints: {
+            900: { slidesPerView: 1, spaceBetween: 12 },
+        }
+    });
+
     var bgSwiper = new Swiper('.main-card-bg-swiper', {
         effect: 'fade',
         loop: true,
@@ -51,27 +71,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Testimonials Swiper
-    new Swiper('.testimonials-swiper', {
-        slidesPerView: 2,
-        spaceBetween: 40,
-        loop: true,
-        autoplay: {
-            delay: 3500,
-            disableOnInteraction: false,
-        },
-        navigation: {
-            nextEl: '.testimonials-section .swiper-button-next',
-            prevEl: '.testimonials-section .swiper-button-prev',
-        },
-        breakpoints: {
-            1200: { slidesPerView: 2, spaceBetween: 40 },
-            900: { slidesPerView: 1, spaceBetween: 20 },
-            0: { slidesPerView: 1, spaceBetween: 10 }
-        }
-    });
-
     // Scroll to Top Button logic
+    var swiper = new Swiper('.mySwiper', {
+    slidesPerView: 2,
+    spaceBetween: 20,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+        768: {
+            slidesPerView: 2,
+        },
+        0: {
+            slidesPerView: 1,
+        }
+    }
+});
     const scrollBtn = document.getElementById('scrollToTopBtn');
     window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {

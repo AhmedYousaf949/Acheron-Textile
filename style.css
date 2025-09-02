@@ -1666,7 +1666,7 @@ body {
 }
 
 .faq-item.active {
-    border-left: 5px solid #c6e800;
+    border-left: 5px solid #100442;
     box-shadow: 0 2px 8px rgba(198,232,0,0.08);
 }
 
@@ -1742,7 +1742,7 @@ body {
 }
 
 .view-more:hover {
-    background: #c6e800;
+    background: #5c0f0f;
     color: #111;
     box-shadow: 2px 2px 8px #c6e80055;
     transform: scale(1.02);
@@ -1833,7 +1833,7 @@ body {
 }
 
 .submit-btn:hover {
-    background: #c6e800;
+    background: #5c0f0f;
     color: #111;
     transform: scale(1.02);
     transition: 1s ease-in-out;
@@ -1848,4 +1848,15 @@ body {
         min-width: unset;
         margin-bottom: 24px;
     }
+}
+
+/* Bold and style service and business process headings */
+.service-title,
+.process-title {
+    font-weight: 800;
+    font-size: 1.35em;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
 }

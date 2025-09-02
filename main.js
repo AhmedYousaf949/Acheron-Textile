@@ -100,3 +100,20 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', function() {
+        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+        const parent = q.parentElement;
+        parent.classList.toggle('active');
+    });
+});
+
+// Character count for textarea
+const textarea = document.querySelector('textarea');
+const charCount = document.querySelector('.char-count span');
+if (textarea && charCount) {
+    textarea.addEventListener('input', function() {
+        const max = 50;
+        charCount.textContent = Math.max(0, max - textarea.value.length);
+    });
+}

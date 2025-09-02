@@ -1,15 +1,95 @@
 document.addEventListener('DOMContentLoaded', function() {
-    new Typed('#typed-title', {
-        strings: [
-            'Discover <span class="highlight">Premium</span><br><span class="highlight accent">Textiles</span>'
-        ],
-        typeSpeed: 45,
-        showCursor: false,
-        smartBackspace: false,
-        contentType: 'html'
-    });
+    const typedTitle = document.getElementById('typed-title');
+    if (!typedTitle) return;
 
-    // Testimonials Swiper initialization (2 slides per view, swipe one by one)
+    // Texts to type (with HTML for highlight)
+    const firstText = 'Home and Medical Manufacturers in Pakistan';
+    const secondTextSegments = [
+        { text: 'Discover ', html: false },
+        { text: 'Premium', html: true, class: 'highlight' },
+        { text: ' Textiles', html: false }
+    ];
+    let showFirst = true;
+
+    // Type plain text
+    function typePlain(text, callback) {
+        typedTitle.innerHTML = '';
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                typedTitle.innerHTML += text[i];
+                i++;
+                setTimeout(type, 45);
+            } else if (callback) {
+                setTimeout(callback, 1200);
+            }
+        }
+        type();
+    }
+
+    // Type array of segments (with highlight)
+    function typeSegments(segments, callback) {
+        typedTitle.innerHTML = '';
+        let seg = 0;
+        function typeSegment() {
+            if (seg < segments.length) {
+                let container;
+                if (segments[seg].html) {
+                    container = document.createElement('span');
+                    container.className = segments[seg].class || '';
+                } else {
+                    container = document.createElement('span');
+                }
+                let chars = segments[seg].text;
+                let j = 0;
+                function typeChar() {
+                    if (j <= chars.length) {
+                        container.textContent = chars.slice(0, j);
+                        // Remove previous segment if exists
+                        if (typedTitle.children[seg]) {
+                            typedTitle.removeChild(typedTitle.children[seg]);
+                        }
+                        typedTitle.appendChild(container.cloneNode(true));
+                        j++;
+                        setTimeout(typeChar, 45);
+                    } else {
+                        seg++;
+                        setTimeout(typeSegment, 100);
+                    }
+                }
+                typeChar();
+            } else if (callback) {
+                setTimeout(callback, 1200);
+            }
+        }
+        typeSegment();
+    }
+
+    function swapText() {
+        if (showFirst) {
+            typePlain(firstText, () => {
+                showFirst = false;
+                typedTitle.innerHTML = '';
+                setTimeout(() => {
+                    typeSegments(secondTextSegments, swapText);
+                }, 400);
+            });
+        } else {
+            typedTitle.innerHTML = '';
+            setTimeout(() => {
+                typePlain(firstText, () => {
+                    showFirst = true;
+                    typedTitle.innerHTML = '';
+                    setTimeout(() => {
+                        typeSegments(secondTextSegments, swapText);
+                    }, 400);
+                });
+            }, 400);
+        }
+    }
+
+    swapText();
+
     new Swiper('.testimonials-swiper', {
         slidesPerView: 2,
         spaceBetween: 24,
@@ -22,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             nextEl: '.testimonials-section .swiper-button-next',
             prevEl: '.testimonials-section .swiper-button-prev',
         },
-        slidesPerGroup: 1, // Swipe one by one
+        slidesPerGroup: 1,
         breakpoints: {
             900: { slidesPerView: 1, spaceBetween: 12 },
         }
@@ -71,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Scroll to Top Button logic
+    
     var swiper = new Swiper('.mySwiper', {
     slidesPerView: 2,
     spaceBetween: 20,
@@ -100,20 +180,23 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
-document.querySelectorAll('.faq-question').forEach(q => {
-    q.addEventListener('click', function() {
-        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-        const parent = q.parentElement;
-        parent.classList.toggle('active');
-    });
-});
+ document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', function() {
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if(item.contains(this)) {
+                        item.classList.toggle('active');
+                        item.querySelector('.faq-toggle').textContent = item.classList.contains('active') ? '−' : '+';
+                    } else {
+                        item.classList.remove('active');
+                        item.querySelector('.faq-toggle').textContent = '+';
+                    }
+                });
+            });
+        });
 
-// Character count for textarea
-const textarea = document.querySelector('textarea');
-const charCount = document.querySelector('.char-count span');
-if (textarea && charCount) {
-    textarea.addEventListener('input', function() {
-        const max = 50;
-        charCount.textContent = Math.max(0, max - textarea.value.length);
-    });
-}
+        const textarea = document.querySelector('textarea');
+        const charCount = document.querySelector('.char-count span');
+        textarea.addEventListener('input', function() {
+            let remaining = 50 - this.value.length;
+            charCount.textContent = remaining >= 0 ? remaining : 0;
+        });
